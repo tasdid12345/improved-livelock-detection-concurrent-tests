@@ -1,0 +1,31 @@
+{
+  "question": "Can a class-balanced gradient-boosting classifier on windowed thread-state features separate true livelocks from long legitimate waits better than a standard no-progress timeout detector?",
+  "method": "Synthetic thread wait traces; stratified 75/25 split (seed 42); baseline = max-gap no-progress timeout with window tuned on train; improved = class-balanced LightGBM on windowed features with CV-tuned hyperparameters and OOF-tuned threshold; test set used once.",
+  "dataset": {
+    "name": "Synthetic concurrent-thread wait traces (numpy-generated)",
+    "source_url": "https://scikit-learn.org",
+    "n_rows": 6000,
+    "n_train": 4500,
+    "n_test": 1500,
+    "same_as_paper": false,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "livelock-class F1",
+  "higher_is_better": true,
+  "baseline": "No-progress timeout: flag a thread if no shared-state write occurs within a window of 60 steps (window tuned on train).",
+  "improved": "Class-balanced LightGBM on windowed features (state-repeat counts, time since last shared write, wait length, distinct-state ratio, etc.) with CV-tuned hyperparameters and threshold.",
+  "metrics": {
+    "baseline_score": 0.7426114991939817,
+    "improved_score": 0.9924477015323118,
+    "improvement": 0.24983620233833004,
+    "baseline_score_std": 0.0,
+    "improved_score_std": 0.0003165727894452889,
+    "baseline_accuracy": 0.6806666666666666,
+    "improved_accuracy": 0.9924444444444444,
+    "baseline_fpr": 0.5605858854860186,
+    "improved_fpr": 0.009320905459387484,
+    "baseline_window": 60.0,
+    "improved_threshold": 0.027173592671582026
+  },
+  "notes": "Synthetic traces with hand-designed generative assumptions, not the paper's programs or logs; results depend on those assumptions. The baseline is deterministic, so its seed runs are identical (std 0). Only the LightGBM model varies with seed; the CV folds and threshold use seed 42. Single split, so differences are indicative rather than statistically established."
+}
