@@ -19,6 +19,28 @@ python analysis.py
 
 Results: results are written to results.json (and a chart to figures/).
 
+## Results (latest run)
+
+On a synthetic concurrent-thread wait-trace dataset (1,500 held-out test traces), a standard no-progress timeout detector reached 0.743 livelock-class F1, while a class-balanced LightGBM on windowed thread-state features reached 0.992 on the same test set, from a single split.
+
+| Metric | Value |
+|---|---|
+| baseline_score | 0.7426 |
+| improved_score | 0.9924 |
+| improvement | 0.2498 |
+| baseline_score_std | 0 |
+| improved_score_std | 0.0003166 |
+| baseline_accuracy | 0.6807 |
+| improved_accuracy | 0.9924 |
+| baseline_fpr | 0.5606 |
+| improved_fpr | 0.009321 |
+| baseline_window | 60 |
+| improved_threshold | 0.02717 |
+
+Run on 2026-10-21. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: Synthetic traces with hand-designed generative assumptions, not the paper's programs or logs; results depend on those assumptions. The baseline is deterministic, so its seed runs are identical (std 0). Only the LightGBM model varies with seed; the CV folds and threshold use seed 42. Single split, so differences are indicative rather than statistically established.
+
 ## Reference
 
 This project is motivated by the following paper:
